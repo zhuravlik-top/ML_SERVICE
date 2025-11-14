@@ -1,0 +1,37 @@
+services:
+  inference:
+    build:
+      context: .
+      dockerfile: Dockerfile.inference
+    container_name: inference_service
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+    restart: always
+    command: uvicorn src.inference_service.main:app --host 0.0.0.0 --port 8000
+    environment:
+      - PYTHONPATH=/app
+
+  train:
+    build:
+      context: .
+      dockerfile: Dockerfile.train
+    container_name: train_service
+    env_file:
+      - .env
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./src:/app/src
+    entrypoint: ["python", "-m", "src.train_service.main_train"]
+    environment:
+      - PYTHONPATH=/app
+    restart: "no"
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1

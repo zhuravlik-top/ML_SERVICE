@@ -1,0 +1,24 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Environments
+.env
+.venv/
+env/
+venv/
+
+# Git
+.git
+.gitignore
+
+# Data and models (будут подключены как volumes)
+data/
+models/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
